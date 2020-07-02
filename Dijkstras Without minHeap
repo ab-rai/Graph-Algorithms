@@ -1,0 +1,101 @@
+/*
+
+Sample input:-
+1
+5
+0 3 2 0 0
+3 0 5 3 0
+2 5 0 0 20
+0 3 0 0 4
+0 0 20 4 0
+0 4
+
+Sample Output:-
+10
+0 1 3 4
+
+*/
+
+
+#include <bits/stdc++.h>
+using namespace std;
+int getMinNode(map<int,int> minDist,set<int>  visitedNode,int n)
+{
+	int minNode=-1,minNodeDist=INT_MAX;
+	for(int i=0;i<n;i++)
+	{
+		if(visitedNode.count(i)==0)
+		{
+			if(minDist[i]<minNodeDist)
+			{
+				minNodeDist=minDist[i];
+				minNode=i;
+			}
+		}
+	}
+	return minNode;
+}
+void dijkstras(vector<vector<int> > & adjMat,int src,int dst)
+{
+	int n=adjMat.size();
+	set<int> visitedNode;
+	map<int,int> minDist;
+	map<int,int> parent;
+	for(int i=0;i<n;i++)
+		minDist[i]=INT_MAX;
+	minDist[src]=0;
+	parent[src]=-1;
+	for(int i=0;i<n;i++)
+	{
+		int u=getMinNode(minDist,visitedNode,n);
+		visitedNode.insert(u);
+		if(u==dst)
+			{
+				cout<<minDist[u]<<endl;
+				vector<int> path;
+				int curr=u;
+				while(parent[curr]!=-1)
+				{
+					path.push_back(curr);
+					curr=parent[curr];
+				}
+				path.push_back(curr);
+				for(int i=path.size()-1;i>=0;i--)
+					cout<<path[i]<<" ";
+				cout<<endl;
+				return;
+			}
+		for(int v=0;v<n;v++)
+		{
+			if(adjMat[u][v]!=0 && minDist[v]>minDist[u]+adjMat[u][v])
+			{
+				minDist[v]=minDist[u]+adjMat[u][v];
+				parent[v]=u;
+			}
+		}
+	}
+}
+int main() {
+	int t;
+	cin >> t;
+	while(t--)
+	{
+		int n;
+		cin>>n;
+		vector<vector<int> > adjMat;
+		for(int i=0;i<n;i++)
+		{
+			vector<int> temp;
+			for(int j=0;j<n;j++)
+			{
+				int num;
+				cin>>num;
+				temp.push_back(num);
+			}
+			adjMat.push_back(temp);
+		}
+		int src,dst;
+		cin>>src>>dst;
+		dijkstras(adjMat,src,dst);
+	}
+}
