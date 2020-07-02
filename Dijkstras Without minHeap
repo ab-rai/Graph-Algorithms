@@ -47,9 +47,9 @@ void dijkstras(vector<vector<int> > & adjMat,int src,int dst)
 	parent[src]=-1;
 	for(int i=0;i<n;i++)
 	{
-		int u=getMinNode(minDist,visitedNode,n);
-		visitedNode.insert(u);
-		if(u==dst)
+		int u=getMinNode(minDist,visitedNode,n);	// returns the minimum node from the unvisited nodes time complexity= O(V)
+		visitedNode.insert(u);				// if we use minHeap here then it would take O(log V) for removing minimum node
+		if(u==dst)	// when the destination node has been reached print the output
 			{
 				cout<<minDist[u]<<endl;
 				vector<int> path;
