@@ -102,5 +102,5 @@ int main() {
 	}
 }
 
-// Time Complexity:- O(V^2) where V is the total number of verted(nodes)
+// Time Complexity:- O(V^2) where V is the total number of vertex(nodes)
 // Space Complexity:- O(V)
