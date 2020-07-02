@@ -99,3 +99,6 @@ int main() {
 		dijkstras(adjMat,src,dst);
 	}
 }
+
+// Time Complexity:- O(V^2) where V is the total number of verted(nodes)
+// Space Complexity:- O(V)
