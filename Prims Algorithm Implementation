@@ -1,0 +1,51 @@
+/*
+Leetcode Problem No:- 1135. Connecting Cities With Minimum Cost
+There are N cities numbered from 1 to N.
+
+You are given connections, where each connections[i] = [city1, city2, cost] represents the cost to connect city1 and city2 together. 
+(A connection is bidirectional: connecting city1 and city2 is the same as connecting city2 and city1.)
+
+Return the minimum cost so that for every pair of cities, there exists a path of connections (possibly of length 1) that connects those two cities together.  
+The cost is the sum of the connection costs used. If the task is impossible, return -1.
+*/
+class Solution {
+public:
+    // Prims
+    int minimumCost(int N, vector<vector<int>>& connections) {
+        unordered_map<int,vector<pair<int,int>> > adjList;
+        for(vector<int> edge:connections)
+        {
+            adjList[edge[0]].push_back({edge[1],edge[2]});
+            adjList[edge[1]].push_back({edge[0],edge[2]});
+        }
+        priority_queue<vector<int>, vector<vector<int>> ,greater<vector<int>> > minHeap;
+        int src=1;
+        for(pair<int,int> v:adjList[src])
+        {
+            minHeap.push({v.second,src,v.first});
+        }
+        unordered_set<int> visited;
+        visited.insert(src);
+        int res=0;
+        while(!minHeap.empty())
+        {
+            vector<int> u=minHeap.top();
+            minHeap.pop();
+            if(visited.count(u[2])==1 )
+                continue;
+            res+=u[0];
+            visited.insert(u[2]);
+            for(pair<int,int> v:adjList[u[2]])
+            {
+                if(visited.count(v.first)==0 )
+                    minHeap.push({v.second,u[2],v.first});
+                
+            }
+            if(visited.size()==N)
+                return res;
+        }
+        if(visited.size()!=N)
+                return -1;
+        else return res;
+    }
+};
