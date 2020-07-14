@@ -1,0 +1,42 @@
+/*
+Leetcode Problem No:- 1135. Connecting Cities With Minimum Cost
+There are N cities numbered from 1 to N.
+
+You are given connections, where each connections[i] = [city1, city2, cost] represents the cost to connect city1 and city2 together. 
+(A connection is bidirectional: connecting city1 and city2 is the same as connecting city2 and city1.)
+
+Return the minimum cost so that for every pair of cities, there exists a path of connections (possibly of length 1) that connects those two cities together.  
+The cost is the sum of the connection costs used. If the task is impossible, return -1.
+*/
+
+class Solution {
+public:
+    vector<int> parent;
+    static bool comp(const vector<int>& a, const vector<int>& b) {
+        return (a[2] < b[2]);
+    }
+    
+    int find(int i) {
+        if (parent[i] != i) parent[i] = find(parent[i]);
+        return parent[i];
+    }
+    
+    int minimumCost(int N, vector<vector<int>>& connections) {
+        sort(connections.begin(), connections.end(), comp);
+        parent.resize(N+1, 0);
+        for (int i = 1; i <= N; i++) {
+            parent[i] = i;
+        }
+        int res = 0, count = 1;
+        for (auto& c : connections) {
+            int parent1 = find(c[0]), parent2 = find(c[1]);
+            if (parent1 != parent2) {
+                res += c[2];
+                parent[parent1] = parent2;
+                count++;
+            }
+            if (count == N) return res;
+        }
+        return -1;
+    }
+};
